@@ -16,7 +16,7 @@ type AppParams struct {
 	SigningKey         string `yaml:"signing_key"`
 }
 
-func ReadParams(path string, a *AppParams) error {
+func ReadParams(path string, a *interface{}) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -30,13 +30,12 @@ func ReadParams(path string, a *AppParams) error {
 	return nil
 }
 
-func MakeServerAddr(configPath string) string {
-	var p AppParams
-	ReadParams(configPath, &p)
+func MakeServerAddr(configPath, mode, port string, p *interface{}) string {
+	ReadParams(configPath, p)
 
-	if p.AppMode == RELEASE_MODE {
-		return ":" + p.Port
+	if mode == RELEASE_MODE {
+		return ":" + port
 	}
 
-	return "localhost:" + p.Port
+	return "localhost:" + port
 }
