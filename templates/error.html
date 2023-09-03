@@ -1,3 +1,8 @@
 {{ template "header.html" }}
-<p>Произошла ошибка: {{ . }} </p>
+<div class="main-centered-container">
+    <div class="def-box">
+        <p>Произошла ошибка:</p>
+        <p class="comment">{{ . }}</p>
+    </div>
+</div>
 {{ template "footer.html" }}
