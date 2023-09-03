@@ -10,19 +10,19 @@ const DEBUG_MODE = "debug"
 const RELEASE_MODE = "release"
 
 type AppParams struct {
-	DBConnectionString string `yaml:"db_conn_string"`
-	AppMode            string `yaml:"app_mode"`
-	Port               string `yaml:"port"`
-	SigningKey         string `yaml:"signing_key"`
+	BaseAPIUrl    string `yaml:"base_api_url"`
+	CookieSecrets string `yaml:"cookie_secrets"`
+	AppMode       string `yaml:"app_mode"`
+	Port          string `yaml:"port"`
 }
 
-func ReadParams(path string, a *interface{}) error {
+func ReadParams(path string, a interface{}) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
 
-	err = yaml.Unmarshal([]byte(data), &a)
+	err = yaml.Unmarshal([]byte(data), a)
 	if err != nil {
 		return err
 	}
@@ -30,9 +30,7 @@ func ReadParams(path string, a *interface{}) error {
 	return nil
 }
 
-func MakeServerAddr(configPath, mode, port string, p *interface{}) string {
-	ReadParams(configPath, p)
-
+func MakeServerAddr(mode, port string) string {
 	if mode == RELEASE_MODE {
 		return ":" + port
 	}
